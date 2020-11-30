@@ -1,19 +1,19 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
 export default class User {
-    @PrimaryGeneratedColumn('increment')
-    id: number;
-    
-    @Column()
-    name: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
-    @Column()
-    email: string;
+  @Column()
+  name: string;
 
-    @Column()
-    password: string;
+  @Column()
+  email: string;
 
-    @Column()
-    status: boolean;
-};
+  @Column()
+  password: string;
+
+  @Column()
+  status: boolean;
+}

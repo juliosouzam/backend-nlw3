@@ -5,44 +5,38 @@ import user_view from '../views/user_view';
 import User from '../models/User';
 
 export default {
-    async index(req: Request, res: Response){
-        const userRepository = getRepository(User);
+  async index(req: Request, res: Response) {
+    const userRepository = getRepository(User);
 
-        const user = await userRepository.find(); 
+    const user = await userRepository.find();
 
-        return res.json(user_view.renderMany(user));
+    return res.json(user_view.renderMany(user));
+  },
+  async show(req: Request, res: Response) {
+    const { email, password } = req.body;
 
-    },
-    async show(req: Request, res: Response){
-        const { email, password }  = req.body; 
+    const userRepository = getRepository(User);
 
-        const userRepository = getRepository(User);
+    const user = await userRepository.findOneOrFail(email, password);
 
-        const user = await userRepository.findOneOrFail(email, password); 
+    return res.json(user_view.render(user));
+  },
+  async create(req: Request, res: Response) {
+    const { name, email, password } = req.body;
 
-        return res.json(user_view.render(user));
+    const userRepository = getRepository(User);
 
-    },
-    async create(req: Request, res: Response){
-        const {
-            name,
-            email,
-            password,
-        } = req.body
+    const data = {
+      name,
+      email,
+      password,
+      status: true,
+    };
 
-        const userRepository = getRepository(User);
+    const user = userRepository.create(data);
 
-        const data = {
-            name,
-            email,
-            password,
-            status: true,
-        };
+    await userRepository.save(user);
 
-        const user = userRepository.create(data);
-
-        await userRepository.save(user);
-
-        return res.status(201).json(user)
-    }
+    return res.status(201).json(user);
+  },
 };
